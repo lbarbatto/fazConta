@@ -1,0 +1,119 @@
+/*
+    FazConta Calculator Theme (JavaFX CSS)
+
+    ------------------------------------------------------------
+    PURPOSE
+    ------------------------------------------------------------
+    This stylesheet defines the visual identity of the FazConta
+    calculator application, inspired by modern Windows Calculator
+    dark theme design principles.
+
+    ------------------------------------------------------------
+    DESIGN PRINCIPLES
+    ------------------------------------------------------------
+    - High contrast dark UI for readability
+    - Consistent spacing system (15px outer padding)
+    - Fixed-size interaction targets (70px buttons)
+    - Subtle rounding for modern UI feel (12px radius)
+    - Minimal visual noise (no borders, soft hover states)
+
+    ------------------------------------------------------------
+    COMPONENTS
+    ------------------------------------------------------------
+    1. Root container (layout foundation)
+    2. Display (output area)
+    3. Buttons (interaction elements)
+*/
+
+/* ============================================================
+   ROOT LAYOUT
+   ============================================================
+
+   Defines global background and outer spacing.
+   Acts as the base container for the calculator grid.
+*/
+.root {
+    -fx-background-color: #1e1e1e;
+    -fx-padding: 15;
+}
+
+/* ============================================================
+   DISPLAY COMPONENT
+   ============================================================
+
+   Purpose:
+   - Shows current input and calculation result
+
+   Design decisions:
+   - Right-aligned text (calculator convention)
+   - High contrast for readability
+   - Slight padding for visual breathing space
+   - Rounded corners for modern UI feel
+*/
+.display {
+    -fx-font-size: 30px;
+
+    -fx-alignment: center-right;
+
+    -fx-background-color: #111;
+    -fx-text-fill: white;
+
+    -fx-padding: 10;
+
+    -fx-background-radius: 12;
+
+    /* remove focus artifacts (JavaFX default behavior) */
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* ============================================================
+   BUTTON COMPONENT (BASE STATE)
+   ============================================================
+
+   Purpose:
+   - Uniform interaction element for all calculator actions
+
+   Design constraints:
+   - Fixed size ensures perfect grid alignment
+   - High contrast against dark background
+   - Rounded corners for modern look consistency
+*/
+.button {
+    -fx-background-color: #2b2b2b;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+
+    /* enforce square geometry */
+    -fx-min-width: 70px;
+    -fx-min-height: 70px;
+    -fx-pref-width: 70px;
+    -fx-pref-height: 70px;
+
+    -fx-background-radius: 12;
+}
+
+/* ============================================================
+   HOVER STATE
+   ============================================================
+
+   Purpose:
+   - Provide visual feedback on interaction
+   - Slight lightening for affordance
+*/
+.button:hover {
+    -fx-background-color: #3a3a3a;
+}
+
+/* ============================================================
+   ACTIVE / PRESSED STATE
+   ============================================================
+
+   Purpose:
+   - Immediate feedback on click/tap
+   - Darker tone simulates "press depth"
+*/
+.button:pressed {
+    -fx-background-color: #555;
+}
