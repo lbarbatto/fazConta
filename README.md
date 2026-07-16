@@ -70,5 +70,4 @@ O projeto aplica padrões GoF:
 src/main/java/com/pororoca/   código-fonte
 src/main/resources/           FXML e CSS
 src/test/java/com/pororoca/  testes JUnit 5 (19 testes)
-.agent/                       especificações dos agentes (AGENT.md, CI_AGENT.md)
 ```
