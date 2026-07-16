@@ -39,3 +39,5 @@ build/
 FazConta/app/
 FazConta/runtime/
 custom-runtime/
+agent/
+.agent/
