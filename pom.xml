@@ -8,7 +8,7 @@
     <!-- ===================== IDENTIDADE ===================== -->
     <groupId>com.pororoca</groupId>
     <artifactId>fazconta</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 
     <!-- ===================== PROPERTIES ===================== -->
     <properties>
@@ -96,5 +96,119 @@
         </plugins>
 
     </build>
+
+    <!-- ===================== DISTRIBUIÇÃO (Win11) ===================== -->
+    <!--
+        Gera um executável autocontido (app-image) para Windows 11
+        usando o jpackage nativo do JDK detectado no PATH.
+
+        Passos:
+        1) maven-dependency-plugin copia as dependências (JavaFX)
+           para target/libs.
+        2) exec-maven-plugin invoca 'jpackage' com argumentos
+           explícitos, incluindo os módulos JavaFX.
+
+        Ative com: mvn clean package -Pdist
+        Requer JDK (21+) com jpackage no PATH.
+    -->
+    <profiles>
+        <profile>
+            <id>dist</id>
+            <build>
+                <plugins>
+                    <!-- Remove o diretório de saída anterior do jpackage
+                         (o jpackage não sobrescreve pastas existentes) -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <executions>
+                            <execution>
+                                <id>clean-dist</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
+                                <configuration>
+                                    <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                                    <filesets>
+                                        <fileset>
+                                            <directory>dist</directory>
+                                            <includes>
+                                                <include>FazConta/**</include>
+                                            </includes>
+                                        </fileset>
+                                    </filesets>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Copia dependências (JavaFX) para target/libs -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>3.6.1</version>
+                        <executions>
+                            <execution>
+                                <id>copy-deps</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>
+                                        ${project.build.directory}/libs
+                                    </outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Invoca o jpackage nativo do JDK via antrun
+                         (execução de comando transparente, sem
+                         argumentos posicionais extras) -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>make-exe</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <exec executable="jpackage" failonerror="true">
+                                            <arg value="--input"/>
+                                            <arg value="${project.build.directory}"/>
+                                            <arg value="--main-jar"/>
+                                            <arg value="fazconta-1.1.jar"/>
+                                            <arg value="--main-class"/>
+                                            <arg value="com.pororoca.Main"/>
+                                            <arg value="--module-path"/>
+                                            <arg value="${project.build.directory}/libs"/>
+                                            <arg value="--add-modules"/>
+                                            <arg value="javafx.controls,javafx.fxml,java.logging"/>
+                                            <arg value="--type"/>
+                                            <arg value="app-image"/>
+                                            <arg value="--name"/>
+                                            <arg value="FazConta"/>
+                                            <arg value="--app-version"/>
+                                            <arg value="1.1"/>
+                                            <arg value="--dest"/>
+                                            <arg value="dist"/>
+                                        </exec>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
